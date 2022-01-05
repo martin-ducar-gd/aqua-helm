@@ -66,9 +66,11 @@ spec:
           resources:
 {{ toYaml . | indent 12 }}
 {{- end }}
+{{- if not .Values.TLS.enabled and .Values.TLS.tls_verify }}
           volumeMounts:
             - name: "certs"
               mountPath: "/certs"
+{{- end }}
 {{- if .Values.kubeEnforcerAdvance.enable }}
             - name: "envoy-shared"
               mountPath: "/etc/aquasec/envoy"

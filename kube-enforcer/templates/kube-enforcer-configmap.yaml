@@ -10,13 +10,17 @@ data:
   AQUA_CACHE_EXPIRATION_PERIOD: {{ .Values.aqua_cache_expiration_period | default "60" | quote }}
   AQUA_LOGICAL_NAME: {{ .Values.logicalName | quote }}
   CLUSTER_NAME: {{ .Values.clusterName | quote }}
+{{- if .Values.TLS.enabled }}
+  AQUA_TLS_VERIFY: {{ .Values.TLS.tls_verify | quote }}
   TLS_SERVER_CERT_FILEPATH: "/certs/server.crt"
   TLS_SERVER_KEY_FILEPATH: "/certs/server.key"
+{{- else if .Values.TLS.tls_verify }}
+  AQUA_TLS_VERIFY: {{ .Values.TLS.tls_verify | quote }}
+{{- end }}
 # mTLS env config
 {{- if .Values.TLS.enabled }}
   AQUA_PRIVATE_KEY: "/opt/aquasec/ssl/key.pem"
   AQUA_PUBLIC_KEY: "/opt/aquasec/ssl/cert.pem"
-  AQUA_TLS_VERIFY: {{ .Values.TLS.tls_verify | quote }}
 {{- if .Values.TLS.rootCA_fileName }}
   AQUA_ROOT_CA: "/opt/aquasec/ssl/ca.pem"
 {{- end }}
